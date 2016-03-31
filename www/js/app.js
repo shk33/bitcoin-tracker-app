@@ -18,6 +18,16 @@ angular.module('App', ['ionic'])
       }
     })
 
+    .state('tabs.detail', {
+      url: '/detail/:currency',
+      views: {
+        'rates-tab': {
+          templateUrl: 'views/rates/detail.html',
+          controller: 'DetailController'
+        }
+      }
+    })
+
     .state('tabs.history', {
       url: '/history',
       views: {
