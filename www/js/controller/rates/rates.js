@@ -1,6 +1,20 @@
 angular.module('App')
-.controller('RatesController', function ($scope, $http, Currencies, $ionicLoading) {
+.controller('RatesController', function ($scope, $http, Currencies, $ionicLoading, $ionicPopover) {
   $scope.currencies = Currencies;
+
+  $ionicPopover.fromTemplateUrl('views/rates/help-popover.html', {
+    scope: $scope
+  }).then(function (popover) {
+    $scope.popover = popover;
+  });
+
+  $scope.openHelp = function ($event) {
+    $scope.popover.show($event);
+  };
+
+  $scope.$on('$destroy', function () {
+    $scope.popover.remove();
+  });
 
   $scope.getBitcoinRates = function () {
     $http.get('https://api.bitcoinaverage.com/ticker/all')
@@ -18,6 +32,9 @@ angular.module('App')
         duration: 3000
       });
       console.log(err);
+    })
+    .finally(function () {
+      $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
